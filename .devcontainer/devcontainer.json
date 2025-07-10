@@ -1,0 +1,37 @@
+{
+    "name": "cuda",
+    "build": {
+        "dockerfile": "../Dockerfile"
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash"
+            },
+            "extensions": [
+                "ms-azuretools.vscode-docker",
+                "ms-python.python",
+                "charliermarsh.ruff",
+                "ms-python.vscode-pylance",
+                "kevinrose.vsc-python-indent",
+                "mhutchie.git-graph",
+                "tamasfe.even-better-toml",
+                "ionutvmi.path-autocomplete"
+            ]
+        },
+    },
+    // コンテナのワークスペースを指定
+    "workspaceFolder": "/cuda-workspace",
+    "forwardPorts": [
+        8000
+    ],
+    "remoteUser": "root",
+    // Dockerコンテナ実行時の引数 (GPUを使用するために必要)
+    "runArgs": [
+        "--gpus",
+        "all"
+    ],
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/cuda-workspace,type=bind,consistency=cached",
+    ]
+}

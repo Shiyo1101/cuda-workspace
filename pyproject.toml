@@ -1,0 +1,31 @@
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "D1",    # undocumented
+    "D203",  # one blank line before class
+    "D213",  # multi-line summary second line
+    "D400",
+    "D415",
+    "EXE002",
+    "T201",  # use of `print` in library code
+    "TD001", # invalid todo tag
+    "TD002", # missing todo author
+    "TD003", # missing todo link
+    "PD011", # pandas use of dot values
+    "RUF002"
+]
+unfixable = [
+    "F401", # unused import
+    "F841", # unused variable
+]
+
+logger-objects = ["src.library.logger.LOGGER"]
+
+[tool.ruff.lint.pylint]
+max-args = 6
