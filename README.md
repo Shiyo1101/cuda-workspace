@@ -50,6 +50,41 @@
     docker --version
     ```
 
+#### 2.1 (必要な場合) プロキシ環境下でのDocker設定
+
+大学や企業のネットワークなど、プロキシサーバを経由してインターネットに接続している場合、Dockerがコンテナイメージをプルしたりビルドしたりするためにプロキシ設定が必要です。
+
+  * **Windows / Mac (Docker Desktop) の場合**
+
+    1.  タスクバー（またはメニューバー）のDockerアイコンを右クリックし、**"Settings"** を開きます。
+    2.  **"Resources"** \> **"PROXIES"** に移動します。
+    3.  **"Manual proxy configuration"** を選択し、所属する組織から提供されたプロキシサーバの情報を入力します。
+          * **Web Server (HTTP):** `http://proxy.example.com:8080`
+          * **Secure Web Server (HTTPS):** `http://proxy.example.com:8080`
+          * **Bypass for...:** `localhost,127.0.0.1`
+    4.  **"Apply & Restart"** ボタンを押して設定を適用します。
+
+  * **Linux の場合**
+
+    1.  `~/.docker/` ディレクトリが存在しない場合は作成します: `mkdir -p ~/.docker/`
+    2.  設定ファイル `~/.docker/config.json` をエディタで開きます: `nano ~/.docker/config.json`
+    3.  以下の内容をファイルに記述します。ご自身の環境に合わせてプロキシサーバのアドレスとポート、プロキシを使用しないホスト (`noProxy`) を変更してください。
+        ```json
+        {
+         "proxies": {
+           "default": {
+             "httpProxy": "http://proxy.example.com:8080",
+             "httpsProxy": "http://proxy.example.com:8080",
+             "noProxy": "localhost,127.0.0.1,docker.io"
+           }
+         }
+        }
+        ```
+    4.  ファイルを保存し、Dockerサービスを再起動して設定を反映させます。
+        ```bash
+        sudo systemctl restart docker
+        ```
+
 ### 3\. NVIDIA Container Toolkit (Linuxのみ)
 
   * **説明**: **Linuxユーザーのみ**が必要です。Linux上でDockerコンテナがNVIDIA GPUを利用できるようにするためのツールキットです。WindowsやMacではDocker Desktopがこの機能を提供するため、別途インストールは不要です。
@@ -111,11 +146,30 @@
 
 -----
 
-### ✨ プロジェクトの特長
+### 🐍 Pythonの実行方法
 
-  - **コンテナ化された開発環境**: 開発に必要なライブラリやツールはすべてDockerコンテナ内にパッケージ化されているため、ローカル環境を汚しません。
-  - **GPUサポート**: コンテナ内からNVIDIA GPUを直接利用可能です。
-  - **VS Codeとの完全統合**:
-      - **推奨拡張機能**: Python開発、Docker連携、Git管理などを快適にするためのVS Code拡張機能が自動的にインストールされます。
-      - **リンターとフォーマッター**: [Ruff](https://github.com/astral-sh/ruff) を利用したコーディング規約のチェックとコードの自動整形が設定されています。
-      - **保存時の自動整形**: Pythonファイルを保存すると、自動で`import`の整理とコードのフォーマットが実行されます。
+この開発コンテナには、`Dockerfile`に基づきPythonの実行環境がプリインストールされています。
+
+  * **Pythonのバージョン**: `python3`がインストールされ、`python`コマンドで直接呼び出せるように設定されています。
+
+  * **実行方法**:
+    VS Codeでコンテナ内のターミナルを開き (`Ctrl+J`)、プロジェクトルート（`/cuda-workspace`）にいることを確認してください。
+    `src`フォルダ内に`my_script.py`のようなPythonファイルを作成した場合、以下のコマンドで実行できます。
+
+    ```bash
+    python src/my_script.py
+    ```
+
+  * **プリインストール済みの主要ライブラリ**:
+    Dockerfileの`pip install`コマンドにより、以下のライブラリが利用可能です。
+
+      * `torch`
+      * `numpy`
+      * `pandas`
+      * `opencv-python`
+      * `scikit-learn`
+      * `matplotlib`
+      * `scipy`
+      * `ruff`
+
+    もし追加でライブラリが必要になった場合は、コンテナ内のターミナルで`pip install <package-name>`を実行してインストールできます。。
