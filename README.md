@@ -158,8 +158,8 @@
 1. このリポジトリをローカルにクローンし、VS Code でプロジェクトフォルダを開きます。
 
    ```bash
-   git clone <repository-url>
-   cd <repository-directory>
+   git clone https://github.com/Shiyo1101/cuda-workspace.git
+   cd cuda-workspace
    code .
    ```
 
@@ -211,4 +211,10 @@
   - `scipy`
   - `ruff`
 
-  もし追加でライブラリが必要になった場合は、コンテナ内のターミナルで`pip install <package-name>`を実行してインストールできます。。
+  もし追加でライブラリが必要になった場合は、コンテナ内のターミナルで`pip install <package-name>`を実行してインストールできます。
+
+  例：GPU 対応の Tensorflow のインストール
+
+  ```bash
+  pip install 'tensorflow[and-cuda]'
+  ```
