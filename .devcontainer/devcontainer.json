@@ -1,10 +1,9 @@
 {
     "name": "cuda-workspace",
     "build": {
-        "context": "../docker",
         // デフォルトはTensorFlowのDockerfileを使用
         // 必要に応じて変更可能
-        "dockerfile": "/tensorflow/Dockerfile"
+        "dockerfile": "../docker/tensorflow/Dockerfile"
     },
     "customizations": {
         "vscode": {
@@ -21,7 +20,7 @@
                 "tamasfe.even-better-toml",
                 "ionutvmi.path-autocomplete"
             ]
-        },
+        }
     },
     // コンテナのワークスペースを指定
     "workspaceFolder": "/cuda-workspace",
@@ -35,6 +34,6 @@
         "all"
     ],
     "mounts": [
-        "source=${localWorkspaceFolder},target=/cuda-workspace,type=bind,consistency=cached",
+        "source=${localWorkspaceFolder},target=/cuda-workspace,type=bind,consistency=cached"
     ]
 }
