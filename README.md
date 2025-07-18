@@ -31,8 +31,7 @@
   nvidia-smi
   ```
 
-> [!WARNING]
-> **💡 CUDA Toolkit に関する注意**
+> [!WARNING] > **💡 CUDA Toolkit に関する注意**
 > このプロジェクトでは、必要な CUDA ライブラリは Docker イメージ内に含まれています。そのため、通常ホスト OS に別途 CUDA Toolkit をインストールする必要はありません。上記の NVIDIA ドライバのインストールが最も重要です。
 
 ### 2\. Docker
@@ -185,13 +184,11 @@
 
 ```json:/.devcontainer/devcontainer.json
 {
-    "name": "cuda-pytorch", // 分かりやすいように名前を変更
+    "name": "cuda-workspace",
     "build": {
         "context": "../docker",
-        // "tensorflow/Dockerfile" から変更
         "dockerfile": "pytorch/Dockerfile"
     },
-    // ... 以降の設定は同じ
 }
 ```
 
@@ -201,13 +198,11 @@
 
 ```json:/.devcontainer/devcontainer.json
 {
-    "name": "cuda-requirements", // 分かりやすいように名前を変更
+    "name": "cuda-workspace",
     "build": {
         "context": "../docker",
-        // "tensorflow/Dockerfile" から変更
         "dockerfile": "requirements/Dockerfile"
     },
-    // ... 以降の設定は同じ
 }
 ```
 
