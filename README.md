@@ -32,7 +32,7 @@
   ```
 
 > [!WARNING]
-> 💡 CUDA Toolkit に関する注意
+> **💡 CUDA Toolkit に関する注意**
 > このプロジェクトでは、必要な CUDA ライブラリは Docker イメージ内に含まれています。そのため、通常ホスト OS に別途 CUDA Toolkit をインストールする必要はありません。上記の NVIDIA ドライバのインストールが最も重要です。
 
 ### 2\. Docker
