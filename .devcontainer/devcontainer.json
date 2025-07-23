@@ -15,8 +15,10 @@
                 "ms-python.python",
                 "charliermarsh.ruff",
                 "ms-python.vscode-pylance",
+                "ms-python.isort",
                 "kevinrose.vsc-python-indent",
                 "mhutchie.git-graph",
+                "seatonjiang.gitmoji-vscode",
                 "tamasfe.even-better-toml",
                 "ionutvmi.path-autocomplete"
             ]
