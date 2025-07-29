@@ -1,9 +1,9 @@
 {
     "name": "cuda-workspace",
     "build": {
-        // デフォルトはTensorFlow 2.13.0のDockerfileを使用
+        // デフォルトはTensorFlow 2.17.0のDockerfileを使用
         // 必要に応じて変更可能
-        "dockerfile": "../docker/tf213-stable/Dockerfile"
+        "dockerfile": "../docker/tensorflow-latest/Dockerfile"
     },
     "customizations": {
         "vscode": {

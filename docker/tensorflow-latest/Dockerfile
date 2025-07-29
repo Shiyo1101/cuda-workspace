@@ -1,7 +1,6 @@
-# Tensorflow用 Dockerfile
-# ベースイメージとしてNVIDIAの公式CUDAイメージを使用
-# CUDAのバージョンによっては適宜変更してください
-FROM nvidia/cuda:12.2.0-base-ubuntu22.04
+# Tensorflow 2.17用 Dockerfile
+# 要件：https://www.tensorflow.org/install/pip?hl=ja#software_requirements
+FROM tensorflow/tensorflow:2.17.0-gpu-jupyter
 
 # 環境変数の設定
 ENV TZ=Asia/Tokyo
@@ -25,14 +24,14 @@ RUN locale-gen ja_JP.UTF-8
 RUN update-locale LANG=ja_JP.UTF-8
 
 # python3 -> pythonへのシンボリックリンク作成
-RUN ln -s /usr/bin/python3 /usr/bin/python
+RUN ln -sf /usr/bin/python3 /usr/bin/python
 
 # Pythonライブラリのインストール
 RUN pip install --no-cache-dir \
-    'tensorflow[and-cuda]' \
-    numpy \
+    tensorflow[and-cuda]==2.17.0 \
+    "numpy<2.0.0" \
     pandas \
-    opencv-python \
+    "opencv-python==4.9.0.80" \
     scikit-learn \
     matplotlib \
     scipy \

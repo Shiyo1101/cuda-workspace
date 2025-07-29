@@ -186,8 +186,7 @@
 {
     "name": "cuda-workspace",
     "build": {
-        "context": "../docker",
-        "dockerfile": "pytorch/Dockerfile"
+        "dockerfile": "../docker/pytorch/Dockerfile"
     },
 }
 ```
@@ -200,8 +199,7 @@
 {
     "name": "cuda-workspace",
     "build": {
-        "context": "../docker",
-        "dockerfile": "requirements/Dockerfile"
+        "dockerfile": "../docker/requirement/Dockerfile"
     },
 }
 ```
