@@ -1,10 +1,5 @@
 # ベースイメージとして TensorFlow GPU イメージを使用（CUDA 12.2 対応）
-FROM tensorflow/tensorflow:2.13.0-gpu
-
-# 環境変数の設定
-ENV TZ=Asia/Tokyo
-ENV DEBIAN_FRONTEND=noninteractive
-ENV LANG=ja_JP.UTF-8
+FROM tensorflow/tensorflow:2.12.0-gpu
 
 # 必要なパッケージをインストール
 RUN apt-get update && apt-get install -y \
@@ -16,19 +11,12 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# 日本語ロケールの設定
-RUN locale-gen ja_JP.UTF-8
-RUN update-locale LANG=ja_JP.UTF-8
-
-# python3 -> pythonへのシンボリックリンク作成
-RUN ln -s /usr/bin/python3 /usr/bin/python
-
 # Pythonライブラリのインストール
 RUN pip install --no-cache-dir \
     Pillow \
+    opencv-python \
     numpy \
     tensorflow \
-    keras \
     scikit-learn \
     scikit-image \
     ruff
