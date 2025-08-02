@@ -28,7 +28,6 @@ RUN update-locale LANG=ja_JP.UTF-8
 RUN ln -s /usr/bin/python3 /usr/bin/python
 
 # Pythonライブラリのインストール
-# README.mdに記載のあった共通ライブラリ + Pytorch
 RUN pip install --no-cache-dir \
     torch \
     numpy \
