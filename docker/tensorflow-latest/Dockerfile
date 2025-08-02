@@ -1,6 +1,6 @@
 # Tensorflow 2.17用 Dockerfile
 # 要件：https://www.tensorflow.org/install/pip?hl=ja#software_requirements
-FROM tensorflow/tensorflow:2.17.0-gpu-jupyter
+FROM tensorflow/tensorflow:2.17.0-gpu
 
 # 環境変数の設定
 ENV TZ=Asia/Tokyo
