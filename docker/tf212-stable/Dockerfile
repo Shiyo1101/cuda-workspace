@@ -31,9 +31,9 @@ WORKDIR /cuda-workspace
 CMD ["bash"]
 
 # ユーザー作成（NIS環境対応）
-ARG USER_UID="enter you are uid. if check own uid, run command: echo $uid"
-ARG USER_GID="enter you are gid. if check own gid, run command: echo $gid"
-ARG USERNAME="enter you are username. if check own username, run command: whoami"
+ARG USER_UID
+ARG USER_GID
+ARG USERNAME
 
 # グループが存在しない場合は作成
 RUN groupadd -f -g ${USER_GID} ${USERNAME} || true
