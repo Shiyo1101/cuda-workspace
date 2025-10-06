@@ -55,7 +55,7 @@
 - **(Linux 限定) 実行権限エラーへの対処**:
   Linux で`sudo`なしで`docker`コマンドを実行しようとすると、「permission denied」というエラーが発生することがあります。以下のいずれかの方法で対処してください。
 
-  **方法1: 現在のユーザーを`docker`グループに追加する（推奨）**
+  **方法 1: 現在のユーザーを`docker`グループに追加する（推奨）**
 
   以下のコマンドで現在のユーザーを`docker`グループに追加してください。
 
@@ -65,31 +65,31 @@
 
   **【重要】** このコマンドの実行後、変更を反映させるために一度 PC から**ログアウトして再度ログイン**するか、**PC を再起動**する必要があります。
 
-  **方法2: Dockerデーモンの設定を変更して権限を永続化する**
+  **方法 2: Docker デーモンの設定を変更して権限を永続化する**
 
-  PCを再起動すると`/var/run/docker.sock`の権限設定がリセットされてしまう場合、Dockerデーモンの設定ファイルを作成して、ソケットのグループを永続的に`docker`に指定します。
+  PC を再起動すると`/var/run/docker.sock`の権限設定がリセットされてしまう場合、Docker デーモンの設定ファイルを作成して、ソケットのグループを永続的に`docker`に指定します。
 
-  1.  設定ファイル `/etc/docker/daemon.json` を管理者権限で開きます（ファイルが存在しない場合は新規作成されます）。
+  1. 設定ファイル `/etc/docker/daemon.json` を管理者権限で開きます（ファイルが存在しない場合は新規作成されます）。
 
-      ```bash
-      sudo nano /etc/docker/daemon.json
-      ```
+     ```bash
+     sudo nano /etc/docker/daemon.json
+     ```
 
-  2.  以下の内容を記述して保存します。すでにファイルに他の設定がある場合は、カンマ(`,`)を追加して追記してください。
+  2. 以下の内容を記述して保存します。すでにファイルに他の設定がある場合は、カンマ(`,`)を追加して追記してください。
 
-      ```json
-      {
-        "group": "docker"
-      }
-      ```
+     ```json
+     {
+       "group": "docker"
+     }
+     ```
 
-  3.  Dockerデーモンを再起動して設定を反映させます。
+  3. Docker デーモンを再起動して設定を反映させます。
 
-      ```bash
-      sudo systemctl restart docker
-      ```
+     ```bash
+     sudo systemctl restart docker
+     ```
 
-  これにより、`docker`グループに所属する全てのユーザーが`sudo`なしでDockerコマンドを実行できるようになります。
+  これにより、`docker`グループに所属する全てのユーザーが`sudo`なしで Docker コマンドを実行できるようになります。
 
 - **確認方法**: ターミナルで以下のコマンドを実行し、バージョン情報が表示されることを確認します。
 
@@ -180,8 +180,6 @@
 
 ### 🚀 プロジェクトの起動
 
-すべての前提ソフトウェアの準備が整ったら、以下の手順で開発環境を起動します。
-
 1. このリポジトリをローカルにクローンし、VS Code でプロジェクトフォルダを開きます。
 
    ```bash
@@ -195,6 +193,75 @@
 3. 自動的に Docker イメージのビルドとコンテナの起動が開始されます。初回は環境構築のため数分かかる場合があります。
 
 ビルドが完了すると、VS Code のウィンドウがリロードされ、コンテナ内の開発環境に接続された状態になります。
+
+---
+
+### 🧑‍💻 (推奨) コンテナ内のユーザー設定
+
+コンテナ内で作成したファイルの所有者をホスト OS のユーザーと一致させるために、コンテナ内で使用するユーザーの ID と名前を設定することを強く推奨します。これにより、ファイルの権限に関する問題を回避できます。
+
+#### 1. ホスト OS のユーザー情報を取得する
+
+まず、お使いのターミナルで以下のコマンドを実行し、ご自身の **UID** (ユーザー ID)、**GID** (グループ ID)、**USERNAME** (ユーザー名) を確認します。
+
+```bash
+# ユーザーID (UID) を確認
+id -u
+
+# グループID (GID) を確認
+id -g
+
+# ユーザー名 (USERNAME) を確認
+whoami
+```
+
+#### 2. `.devcontainer/devcontainer.json` を編集する
+
+次に、プロジェクトのルートにある `.devcontainer/devcontainer.json` ファイルを開き、`build.args` プロパティを追加して先ほど取得した情報を設定し、`remoteUser` をご自身のユーザー名に変更します。
+
+**変更前の例:**
+
+```json:/.devcontainer/devcontainer.json
+{
+    "name": "cuda-workspace",
+    "build": {
+        "dockerfile": "../docker/tensorflow-latest/Dockerfile",
+        "args": {
+            "USER_UID": "enter your uid. if check own uid, run command: id -u",
+            "USER_GID": "enter your gid. if check own gid, run command: id -g",
+            "USERNAME": "enter your username. if check own username, run command: whoami"
+        }
+    },
+    "remoteUser": "enter the username",
+    ...
+}
+```
+
+**変更後の例:**
+`id -u` の結果が `1000`、`id -g` の結果が `1000`、`whoami` の結果が `my-user` だった場合、以下のように編集します。
+
+```json:/.devcontainer/devcontainer.json
+{
+    "name": "cuda-workspace",
+    "build": {
+        "dockerfile": "../docker/tensorflow-latest/Dockerfile",
+        // ↓↓↓ Dockerfileに渡す引数を追加 ↓↓↓
+        "args": {
+            "USER_UID": "1000",      // "id -u" の実行結果
+            "USER_GID": "1000",     // "id -g" の実行結果
+            "USERNAME": "my-user" // "whoami" の実行結果
+        }
+    },
+    // ↓↓↓ リモートユーザーを自分のユーザー名に変更 ↓↓↓
+    "remoteUser": "my-user", // "whoami" の実行結果
+    ...
+}
+```
+
+**【重要】**
+設定を変更した後は、VS Code のコマンドパレット (`Ctrl+Shift+P` または `Cmd+Shift+P`) を開き、**`Dev Containers: Rebuild Container`** を実行してコンテナを再ビルドしてください。これにより、変更が適用されます。
+
+---
 
 #### 2\. 開発環境の切り替え
 
