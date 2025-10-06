@@ -29,7 +29,7 @@
     "forwardPorts": [
         8000
     ],
-    "remoteUser": "root",
+    "remoteUser": "enter the username",
     // Dockerコンテナ実行時の引数 (GPUを使用するために必要)
     "runArgs": [
         "--gpus",

@@ -29,3 +29,22 @@ WORKDIR /cuda-workspace
 
 # コンテナ起動時にシェルを開く設定
 CMD ["bash"]
+
+# ユーザー作成（NIS環境対応）
+ARG USER_UID="enter you are uid. if check own uid, run command: echo $uid"
+ARG USER_GID="enter you are gid. if check own gid, run command: echo $gid"
+ARG USERNAME="enter you are username. if check own username, run command: whoami"
+
+# グループが存在しない場合は作成
+RUN groupadd -f -g ${USER_GID} ${USERNAME} || true
+
+# ユーザーを作成
+RUN useradd -m -u ${USER_UID} -g ${USER_GID} -s /bin/bash ${USERNAME} || \
+    usermod -u ${USER_UID} -g ${USER_GID} ${USERNAME}
+
+# sudoをインストールして権限を付与（必要に応じて）
+RUN apt-get update && apt-get install -y sudo && \
+    echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/${USERNAME} && \
+    chmod 0440 /etc/sudoers.d/${USERNAME}
+
+USER ${USERNAME}
