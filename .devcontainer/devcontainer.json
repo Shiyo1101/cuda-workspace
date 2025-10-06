@@ -3,8 +3,14 @@
     "build": {
         // デフォルトはTensorFlow 2.17.0のDockerfileを使用
         // 必要に応じて変更可能
-        "dockerfile": "../docker/tensorflow-latest/Dockerfile"
+        "dockerfile": "../docker/tensorflow-latest/Dockerfile",
+        "args": {
+            "USER_UID": "enter your uid. if check own uid, run command: id -u",
+            "USER_GID": "enter your gid. if check own gid, run command: id -g",
+            "USERNAME": "enter your username. if check own username, run command: whoami"
+        }
     },
+    "remoteUser": "enter the username",
     "customizations": {
         "vscode": {
             "settings": {
@@ -29,7 +35,6 @@
     "forwardPorts": [
         8000
     ],
-    "remoteUser": "enter the username",
     // Dockerコンテナ実行時の引数 (GPUを使用するために必要)
     "runArgs": [
         "--gpus",
